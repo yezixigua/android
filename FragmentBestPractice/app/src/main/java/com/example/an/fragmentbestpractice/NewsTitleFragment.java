@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import java.util.Random;
 public class NewsTitleFragment extends Fragment {
 
     private boolean isTwoPane;
+    private static final String TAG = "zz_NewsTitleFragment";
 
     @Nullable
     @Override
@@ -101,6 +103,7 @@ public class NewsTitleFragment extends Fragment {
                         newsContentFragment.refresh(news.getTitle(), news.getContent());
                     } else {
                         NewsContentActivity.actionStart(getActivity(), news.getTitle(), news.getContent());
+                        Log.d(TAG, "onClick: ");
                     }
                 }
             });
