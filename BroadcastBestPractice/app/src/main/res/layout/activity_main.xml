@@ -6,9 +6,9 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/button"
-        android:text="button"
+        android:id="@+id/force_offline"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Send force offline broadcast" />
 
 </LinearLayout>
