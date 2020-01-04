@@ -7,13 +7,19 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentProvider;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -39,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "zz";
 
+    private String newId;
+
     ListView contactsView;
     ArrayAdapter<String> adapter;
     List<String> contactList = new ArrayList<String>();
@@ -48,17 +56,86 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        contactsView = findViewById(R.id.contacts_view);
+        Button addData = findViewById(R.id.add_data);
+        addData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("content://com.example.contactstest.provider/book");
+                ContentValues values = new ContentValues();
+                values.put("name", "A Clash of Kings");
+                values.put("author", "George Martin");
+                values.put("page", 1040);
+                values.put("price", 22.85);
+                ContentResolver resolver =  getContentResolver();
+                Uri newUri = resolver.insert(uri, values);
+                newId = newUri.getPathSegments().get(1);
+            }
+        });
+
+        Button queryData = findViewById(R.id.query_data);
+        queryData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Log.d(TAG, "onClick: query");
+                
+                Uri uri = Uri.parse("content://com.example.contactstest.provider/book");
+                Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+
+                if (cursor != null) {
+                    while (cursor.moveToNext()) {
+                        String name = cursor.getString(cursor.getColumnIndex("name"));
+                        String author = cursor.getString(cursor.getColumnIndex("author"));
+                        int pages = cursor.getInt(cursor.getColumnIndex("pages"));
+                        double price = cursor.getDouble(cursor.getColumnIndex("price"));
+
+                        Log.d(TAG, "name: " + name);
+                        Log.d(TAG, "author: " + author);
+                        Log.d(TAG, "pages: " + pages);
+                        Log.d(TAG, "price: " + price);
+                    }
+                    cursor.close();
+                }
+
+            }
+        });
+
+        Button updateData = findViewById(R.id.update_data);
+        updateData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("content://com.example.contactstest.provider/book" + newId);
+                ContentValues values = new ContentValues();
+                values.put("name", "A Storm of swords");
+                values.put("author", "George Martin");
+                values.put("page", 1216);
+                values.put("price", 24.05);
+                getContentResolver().update(uri, values, null, null);
+            }
+        });
+
+        Button deleteData = findViewById(R.id.delete_data);
+        deleteData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("content://com.example.contactstest.provider/book" + newId);
+                getContentResolver().delete(uri, null, null);
+            }
+        });
 
 
-        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_CONTACTS}, 1);
-        } else {
-            readContacts();
-        }
-
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, contactList);
-        contactsView.setAdapter(adapter);
+//        原本申请权限和从系统通讯录中读取联系人的部分
+//        contactsView = findViewById(R.id.contacts_view);
+//
+//
+//        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_CONTACTS}, 1);
+//        } else {
+//            readContacts();
+//        }
+//
+//        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, contactList);
+//        contactsView.setAdapter(adapter);
 
     }
 
@@ -83,7 +160,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case 1:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
