@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private Button takePhoto;
     private ImageView picture;
     private Uri imageUri;
+    private Button chooseFromAlbum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +75,31 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                 startActivityForResult(intent, CROP_PHOTO);
+            }
+        });
+
+        chooseFromAlbum = findViewById(R.id.choose_from_album);
+        chooseFromAlbum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                File outputImage = new File(Environment.getExternalStorageDirectory(), "outputImage.jpg");
+                try {
+                    if (outputImage.exists()) {
+                        outputImage.delete();
+                    }
+                    outputImage.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                imageUri = Uri.fromFile(outputImage);
+                Intent intent = new Intent("android.intent.action.GET_CONTENT");
+                intent.setType("image/*");
+                intent.putExtra("crop", true);
+                intent.putExtra("scale", true);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                startActivityForResult(intent, CROP_PHOTO);
+
             }
         });
 
