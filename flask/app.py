@@ -60,7 +60,7 @@ def request_pic():
         index = random.randint(0, len(pic_file_name) - 1)
 
         return_dict['type'] = 'pic'
-        return_dict['index'] = index
+        return_dict['name'] = pic_file_name[index]
 
         if os.path.isfile(os.path.join('pic', pic_file_name[index])):
             return json.dumps(return_dict)
@@ -75,7 +75,7 @@ def download_video():
     index = random.randint(0, len(video_file_name) - 1)
 
     return_dict['type'] = 'video'
-    return_dict['index'] = index
+    return_dict['name'] = video_file_name[index]
 
     if os.path.isfile(os.path.join('video', video_file_name[index])):
         return json.dumps(return_dict)

@@ -11,6 +11,8 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -18,6 +20,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import android.widget.VideoView;
+
+import com.zz.myadsplayer.request.RequestServer;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,6 +55,14 @@ public class Video extends AppCompatActivity implements View.OnClickListener {
 
     private int index = 0;
 
+    Handler handler = new Handler() {
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +90,9 @@ public class Video extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void initVideoPath() {
+
+        RequestServer requestServer = new RequestServer();
+        requestServer.getAdsUrl(RequestServer.AdsType.VIDEO);
 
         mSurfaceHolder = mVideoPlaySurfaceView.getHolder();
         mSurfaceHolder.addCallback(new SurfaceHolder.Callback() {
