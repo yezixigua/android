@@ -27,6 +27,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
   *
@@ -53,15 +56,9 @@ public class Video extends AppCompatActivity implements View.OnClickListener {
     private SurfaceView mVideoPlaySurfaceView;
     private SurfaceHolder mSurfaceHolder;
 
+    private BlockingQueue<String> queue = new LinkedBlockingQueue<>(10);
+
     private int index = 0;
-
-    Handler handler = new Handler() {
-
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            super.handleMessage(msg);
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +88,7 @@ public class Video extends AppCompatActivity implements View.OnClickListener {
 
     private void initVideoPath() {
 
-        RequestServer requestServer = new RequestServer();
+        RequestServer requestServer = new RequestServer(queue);
         requestServer.getAdsUrl(RequestServer.AdsType.VIDEO);
 
         mSurfaceHolder = mVideoPlaySurfaceView.getHolder();
@@ -103,10 +100,21 @@ public class Video extends AppCompatActivity implements View.OnClickListener {
                 mMediaPlayer = new MediaPlayer();
             }
 
-            String uri = "android.resource://" + getPackageName() + "/" + R.raw.zz1;
+            String videoToPlay = null;
+            try {
+                videoToPlay = queue.poll(2, TimeUnit.SECONDS);
+
+                if (videoToPlay == null) {
+                    Log.d(TAG, "首次取到视频为空");
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+                String uri = "android.resource://" + getPackageName() + "/" + R.raw.zz1;
 //          videoView.setVideoPath(Uri.parse(uri).toString());
                 try {
-                    mMediaPlayer.setDataSource(Video.this, Uri.parse(uri));
+                    mMediaPlayer.setDataSource(videoToPlay);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -119,7 +127,8 @@ public class Video extends AppCompatActivity implements View.OnClickListener {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
                         mMediaPlayer.setLooping(false);//设置循环播放
-//                        mMediaPlayer.start();
+//                        当准备好后不播放，注掉这里
+                        mMediaPlayer.start();
                     }
                 });
 
@@ -127,21 +136,40 @@ public class Video extends AppCompatActivity implements View.OnClickListener {
 
                     @Override
                     public void onCompletion(MediaPlayer mp) {
-                        String uri = "";
-                        if (index == 0) {
-                            uri = "android.resource://" + getPackageName() + "/" + R.raw.zz2;
-                            index = 1;
-                        } else {
-                            uri = "android.resource://" + getPackageName() + "/" + R.raw.zz1;
-                            index = 0;
-                        }
+//                        String uri = "";
+//                        if (index == 0) {
+//                            uri = "android.resource://" + getPackageName() + "/" + R.raw.zz2;
+//                            index = 1;
+//                        } else {
+//                            uri = "android.resource://" + getPackageName() + "/" + R.raw.zz1;
+//                            index = 0;
+//                        }
+//                        mMediaPlayer.reset();
+//                        try {
+//                            mMediaPlayer.setDataSource(Video.this, Uri.parse(uri));
+//                            mMediaPlayer.prepare();//异步准备
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+                        requestServer.getAdsUrl(RequestServer.AdsType.VIDEO);
                         mMediaPlayer.reset();
+                        String videoToPlay = null;
                         try {
-                            mMediaPlayer.setDataSource(Video.this, Uri.parse(uri));
-                            mMediaPlayer.prepare();//异步准备
+                            videoToPlay = queue.poll(2, TimeUnit.SECONDS);
+
+                            if (videoToPlay == null) {
+                                Log.d(TAG, "取到视频为空");
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            mMediaPlayer.setDataSource(videoToPlay);
+                            mMediaPlayer.prepare();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+
 
                         mMediaPlayer.start();
                     }

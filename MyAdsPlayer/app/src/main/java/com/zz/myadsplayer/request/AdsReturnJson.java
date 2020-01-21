@@ -17,23 +17,34 @@ public class AdsReturnJson {
     public final String IMAGE_TYPE = "pic";
     public final String VIDEO_TYPE = "video";
 
-
     public String type;
     public String name;
-
-    public String getName() {
-        return name;
-    }
+    public String md5;
 
     public String getType() {
         return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public String getFileMd5() {
+        return md5;
     }
+
+    public void setFileMd5(String fileMd5) {
+        this.md5 = fileMd5;
+    }
+
+
+
 }

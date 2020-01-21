@@ -20,6 +20,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
   *
@@ -38,7 +40,7 @@ import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    private BlockingQueue<String> queue = new LinkedBlockingQueue<>(10);
 
     private Button videoButton;
     private Button imageButton;
@@ -73,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                RequestServer requestServer = new RequestServer();
-                requestServer.getAdsUrl(RequestServer.AdsType.IMAGE);
+                RequestServer requestServer = new RequestServer(queue);
+                requestServer.getAdsUrl(RequestServer.AdsType.VIDEO);
 
             }
         });
