@@ -83,6 +83,8 @@ public class RequestServer {
                         Log.d(TAG, "uri: " + uri);
                         downloadAds(type, uri);
 
+
+
                     }
                 };
                 Looper.loop();

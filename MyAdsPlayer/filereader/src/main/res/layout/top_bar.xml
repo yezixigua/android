@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:actionBarSize"
+        android:background="?attr/colorPrimary">
+
+        <Button
+            android:id="@+id/top_back"
+            android:text="后退"
+            android:src="@drawable/back_bg"
+            android:layout_width="wrap_content"
+            android:layout_gravity="left"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:text="查找"
+            android:id="@+id/top_find" />
+
+
+
+    </androidx.appcompat.widget.Toolbar>
+
+
+
+</LinearLayout>

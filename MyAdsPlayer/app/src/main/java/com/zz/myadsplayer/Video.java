@@ -151,6 +151,7 @@ public class Video extends AppCompatActivity implements View.OnClickListener {
 //                        } catch (IOException e) {
 //                            e.printStackTrace();
 //                        }
+
                         requestServer.getAdsUrl(RequestServer.AdsType.VIDEO);
                         mMediaPlayer.reset();
                         String videoToPlay = null;
@@ -172,6 +173,7 @@ public class Video extends AppCompatActivity implements View.OnClickListener {
 
 
                         mMediaPlayer.start();
+
                     }
                 });
 

@@ -1,25 +1,24 @@
 package com.zz.myadsplayer;
 
 import androidx.appcompat.app.AppCompatActivity;
-import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
-import android.content.Context;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.FileUtils;
 import android.view.View;
 import android.widget.Button;
 
+import com.zz.myadsplayer.activity.MediaPlayerTest;
+import com.zz.myadsplayer.activity.NetworkState;
+import com.zz.myadsplayer.broadcast.MyService;
+import com.zz.myadsplayer.contentprovider.ReadContacts;
+import com.zz.myadsplayer.contentprovider.TestMyProvider;
+import com.zz.myadsplayer.mytest.FragmentTest;
+import com.zz.myadsplayer.mytest.MyTest;
 import com.zz.myadsplayer.request.RequestServer;
-import com.zz.myadsplayer.utils.MD5;
+import com.zz.myadsplayer.service.TimeService;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -45,6 +44,16 @@ public class MainActivity extends AppCompatActivity {
     private Button videoButton;
     private Button imageButton;
     private Button downloadButton;
+    private Button netButton;
+    private Button myTestButton;
+    private Button myMediaPlayer;
+    private Button startFragment;
+    private Button startService;
+    private Button startBroadcastService;
+    private Button sendBroadcast;
+
+    private Button readContacts;
+    private Button provider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +63,17 @@ public class MainActivity extends AppCompatActivity {
         videoButton = findViewById(R.id.video_player);
         imageButton = findViewById(R.id.image_player);
         downloadButton = findViewById(R.id.download);
+        netButton = findViewById(R.id.net);
+        myTestButton = findViewById(R.id.test);
+        myMediaPlayer = findViewById(R.id.media_player);
+        startFragment = findViewById(R.id.start_fragment);
+        startService = findViewById(R.id.service);
+
+        startBroadcastService = findViewById(R.id.start_broadcast_receive_service);
+        sendBroadcast = findViewById(R.id.send_broadcast);
+
+        readContacts = findViewById(R.id.read_contacts);
+        provider = findViewById(R.id.content_provider);
 
         videoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,5 +100,85 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        netButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, NetworkState.class);
+                startActivity(intent);
+            }
+        });
+
+        myMediaPlayer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MediaPlayerTest.class);
+                startActivity(intent);
+            }
+        });
+
+        myTestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MyTest.class);
+                startActivity(intent);
+            }
+        });
+
+        startFragment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, FragmentTest.class);
+                startActivity(intent);
+            }
+        });
+
+        startService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sIntent = new Intent(MainActivity.this, TimeService.class);
+                startService(sIntent);
+            }
+        });
+
+        startBroadcastService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MyService.class);
+                startService(intent);
+            }
+        });
+
+        sendBroadcast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent=new Intent("com.zz.myadsplayer.broadcast");
+                intent.putExtra("zz","zz");
+                sendBroadcast(intent);
+            }
+        });
+
+        readContacts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this, ReadContacts.class);
+                startActivity(intent);
+            }
+        });
+
+        provider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this, TestMyProvider.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
+
+
 }
