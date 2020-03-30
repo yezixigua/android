@@ -36,7 +36,7 @@ public class ListItem {
 
         } else {
             this.mType = fileType;
-            this.size = file.length()/1024 + "KB";
+            this.size = calcSizeString(file.length());
         }
         Date date = new Date(file.lastModified());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
@@ -67,5 +67,40 @@ public class ListItem {
 
     public String getSize() {
         return size;
+    }
+
+    public String calcSizeString (long size) {
+
+        int unit = 0;
+        long tmpSize = size;
+        String result = "";
+
+        while (tmpSize > 1024) {
+            tmpSize = tmpSize / 1024;
+            unit ++;
+        }
+
+        switch (unit) {
+            case 0:
+                result = tmpSize + "B";
+                break;
+            case 1:
+                result = tmpSize + "KB";
+                break;
+            case 2:
+                result = tmpSize + "MB";
+                break;
+            case 3:
+                result = tmpSize + "GB";
+                break;
+            case 4:
+                result = tmpSize + "TB";
+                break;
+            default:
+                result = "err";
+                break;
+        }
+        return result;
+
     }
 }

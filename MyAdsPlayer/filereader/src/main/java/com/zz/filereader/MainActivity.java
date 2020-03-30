@@ -153,6 +153,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 当按返回键的时候，将当前目录显示改为父目录的文件
+                if (getSdCardPath().equals(currentDirFile.getPath())) {
+                    return;
+                }
+
                 File currentFile = currentDirFile.getParentFile();
                 currentFiles = currentFile.listFiles();
                 currentDirFile = currentFile;
@@ -211,25 +215,31 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-//        switch (event.getKeyCode()) {
-//            case KeyEvent.KEYCODE_BACK:
-//                // 当按返回键的时候，将当前目录显示改为父目录的文件
-//                File currentFile = currentDirFile.getParentFile();
-//                currentFiles = currentFile.list();
-//                fileList.clear();
-//                for (String fileString: currentFiles) {
-//                    fileList.add(fileString);
-//                }
-//                adapter.notifyDataSetChanged();
-//            case KeyEvent.KEYCODE_MENU:
-//                // 处理自己的逻辑break;
-//            default:
-//                break;
-//        }
-        return super.dispatchKeyEvent(event);
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+//            moveTaskToBack(true);
+            if (getSdCardPath().equals(currentDirFile.getPath())) {
+                return super.onKeyDown(keyCode, event);
+            }
+
+            File currentFile = currentDirFile.getParentFile();
+            currentFiles = currentFile.listFiles();
+            currentDirFile = currentFile;
+            currentDirStr = currentDirFile.getPath();
+            pathText.setText(currentDirStr);
+
+            fileList.clear();
+            for (File fileItem: currentFiles) {
+                fileList.add(new ListItem(fileItem));
+            }
+            adapter.notifyDataSetChanged();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

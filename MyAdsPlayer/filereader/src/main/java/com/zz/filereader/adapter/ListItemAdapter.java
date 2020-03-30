@@ -44,20 +44,36 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         ListItem listItem = getItem(position);
-        View view = LayoutInflater.from(getContext()).inflate(resourceId, null);
+        ItemViewHolder itemViewHolder;
+        View view;
 
-        ImageView itemImage = view.findViewById(R.id.item_image);
-        TextView itemNameText = view.findViewById(R.id.item_name);
-        TextView itemTimeText = view.findViewById(R.id.item_create_time);
-        TextView itemSizeText = view.findViewById(R.id.item_size);
+        if (convertView == null) {
+            view = LayoutInflater.from(getContext()).inflate(resourceId, null);
+            itemViewHolder = new ItemViewHolder();
+            itemViewHolder.itemImage = view.findViewById(R.id.item_image);
+            itemViewHolder.itemNameText = view.findViewById(R.id.item_name);
+            itemViewHolder.itemTimeText = view.findViewById(R.id.item_create_time);
+            itemViewHolder.itemSizeText = view.findViewById(R.id.item_size);
+            view.setTag(itemViewHolder);
+
+        } else {
+            view = convertView;
+            itemViewHolder = (ItemViewHolder) view.getTag();
+        }
 
 
-
-        itemImage.setImageResource(listItem.getImageId());
-        itemNameText.setText(listItem.getName());
-        itemTimeText.setText(listItem.getCreateTime());
-        itemSizeText.setText(listItem.getSize());
+        itemViewHolder.itemImage.setImageResource(listItem.getImageId());
+        itemViewHolder.itemNameText.setText(listItem.getName());
+        itemViewHolder.itemTimeText.setText(listItem.getCreateTime());
+        itemViewHolder.itemSizeText.setText(listItem.getSize());
 
         return view;
+    }
+
+    class ItemViewHolder {
+        ImageView itemImage;
+        TextView itemNameText;
+        TextView itemTimeText;
+        TextView itemSizeText;
     }
 }
