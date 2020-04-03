@@ -190,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "listInit: currentDirStr" + currentDirStr);
         pathText.setText(currentDirStr);
         sdcardFolder = new File(currentDirStr);
+        currentDirFile = sdcardFolder;
         currentFiles = sdcardFolder.listFiles();
         for (File fileItem: currentFiles) {
             fileList.add(new ListItem(fileItem));
