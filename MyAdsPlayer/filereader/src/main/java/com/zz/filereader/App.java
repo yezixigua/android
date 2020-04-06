@@ -21,6 +21,7 @@ public class App extends Application {
 
     @Override
     public void onCreate() {
+//        试试使用sourcetree
         super.onCreate();
         context = getApplicationContext();
 
