@@ -14,7 +14,7 @@ import android.os.Environment;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public class Utlis {
+public class Utils {
 
     public static String getSdCardPath() {
         boolean exist = isSdCardExist();

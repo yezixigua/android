@@ -12,6 +12,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'
+
+        // 加入tinker使用的gradle脚本
         classpath ('com.tencent.tinker:tinker-patch-gradle-plugin:1.9.1')
         
         // NOTE: Do not place your application dependencies here; they belong

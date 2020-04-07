@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.tencent.tinker:tinker-ziputils:1.9.14.5@jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tencent.tinker/tinker-ziputils/1.9.14.5/b9f2d2d0c0483aa74838d9e778e0cc33205a1b14/tinker-ziputils-1.9.14.5.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tencent.tinker/tinker-ziputils/1.9.14.5/ec91a6a0681fca9f4749c35dd4caf16c1736bd0a/tinker-ziputils-1.9.14.5-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tencent.tinker/tinker-ziputils/1.9.14.5/fb375152f4a8968fbefb2d0018b5416c9d5c5187/tinker-ziputils-1.9.14.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

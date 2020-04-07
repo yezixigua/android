@@ -1,4 +1,4 @@
-package com.zz.filereader;
+package com.zz.filereader.activity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.tencent.tinker.lib.tinker.TinkerInstaller;
+import com.zz.filereader.R;
 import com.zz.filereader.adapter.ListItemAdapter;
 import com.zz.filereader.view.ListItem;
 
@@ -34,8 +36,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.zz.filereader.utils.Utlis.getSdCardPath;
-import static com.zz.filereader.utils.Utlis.isSdCardExist;
+import static com.zz.filereader.utils.Utils.getSdCardPath;
+import static com.zz.filereader.utils.Utils.isSdCardExist;
 
 /**     
   *
@@ -71,6 +73,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+
+
+        File patchFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/patch_signed_7zip.apk");
+        if (patchFile.exists()) {
+            TinkerInstaller.onReceiveUpgradePatch(getApplicationContext(), patchFile.getAbsolutePath());
+            Toast.makeText(this, "补丁已安装", Toast.LENGTH_SHORT);
+        } else {
+            Toast.makeText(this, "补丁不存在", Toast.LENGTH_SHORT);
+        }
+
 
         initToolBar();
 

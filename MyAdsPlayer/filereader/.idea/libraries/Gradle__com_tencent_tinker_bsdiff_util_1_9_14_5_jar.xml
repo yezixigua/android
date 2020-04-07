@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.tencent.tinker:bsdiff-util:1.9.14.5@jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tencent.tinker/bsdiff-util/1.9.14.5/3133c807f7621ab7dc9d547c0b027de3ba2e3475/bsdiff-util-1.9.14.5.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tencent.tinker/bsdiff-util/1.9.14.5/ec91a6a0681fca9f4749c35dd4caf16c1736bd0a/bsdiff-util-1.9.14.5-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tencent.tinker/bsdiff-util/1.9.14.5/b04e5e20c249b1994f3a060cbadecf83bd5267e8/bsdiff-util-1.9.14.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
