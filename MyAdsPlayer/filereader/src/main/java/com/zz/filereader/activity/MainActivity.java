@@ -36,6 +36,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.os.Environment.DIRECTORY_MUSIC;
 import static com.zz.filereader.utils.Utils.getSdCardPath;
 import static com.zz.filereader.utils.Utils.isSdCardExist;
 
@@ -204,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
         sdcardFolder = new File(currentDirStr);
         currentDirFile = sdcardFolder;
         currentFiles = sdcardFolder.listFiles();
+
         for (File fileItem: currentFiles) {
             fileList.add(new ListItem(fileItem));
         }
