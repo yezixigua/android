@@ -161,11 +161,11 @@ ext {
 
     //for normal build
     //old apk file to build patch apk
-    tinkerOldApkPath = "${bakPath}/filereader-release-0407-17-09-06.apk"
+    tinkerOldApkPath = "${bakPath}/filereader-release-0410-09-23-32.apk"
     //proguard mapping file to build patch apktinkerEnable
     tinkerApplyMappingPath = "${bakPath}/filereader-release-0407-17-09-06-mapping.txt"
     //resource R.txt to build patch apk, must input if there is resource changed
-    tinkerApplyResourcePath = "${bakPath}/filereader-release-0407-17-09-06-R.txt"
+    tinkerApplyResourcePath = "${bakPath}/filereader-release-0410-09-23-32-R.txt"
 
     //only use for build all flavor, if not, just ignore this field
     tinkerBuildFlavorDirectory = "${bakPath}/app-1018-17-32-47"
@@ -396,6 +396,22 @@ if (buildWithTinker()) {
         //or you can add config filed outside, or get meta value from old apk
         //project.tinkerPatch.packageConfig.configField("test1", project.tinkerPatch.packageConfig.getMetaDataFromOldApk("Test"))
         //project.tinkerPatch.packageConfig.configField("test2", "sample")
+
+        /**
+         * if you don't use zipArtifact or path, we just use 7za to try
+         */
+        sevenZip {
+            /**
+             * optional，default '7za'
+             * the 7zip artifact path, it will use the right 7za with your platform
+             */
+            zipArtifact = "com.tencent.mm:SevenZip:1.1.10"
+            /**
+             * optional，default '7za'
+             * you can specify the 7za path yourself, it will overwrite the zipArtifact value
+             */
+//        path = "/usr/local/bin/7za"
+        }
 
     }
 

@@ -1,2 +1,2 @@
-include ':app', ':filereader'
+include ':app', ':filereader', ':deviceinfo'
 rootProject.name='MyAdsPlayer'

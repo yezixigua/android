@@ -79,11 +79,15 @@ public class MainActivity extends AppCompatActivity {
         File patchFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/patch_signed_7zip.apk");
         if (patchFile.exists()) {
             TinkerInstaller.onReceiveUpgradePatch(getApplicationContext(), patchFile.getAbsolutePath());
-            Toast.makeText(this, "补丁已安装", Toast.LENGTH_SHORT);
+            Log.d(TAG, "onCreate: 补丁已安装");
+
         } else {
-            Toast.makeText(this, "补丁不存在", Toast.LENGTH_SHORT);
+            Log.d(TAG, "onCreate: 补丁不存在");
+
         }
 
+        Toast.makeText(this, "补丁版本5", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onCreate: 补丁版本6");
 
         initToolBar();
 
