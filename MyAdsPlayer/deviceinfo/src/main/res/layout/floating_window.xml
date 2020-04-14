@@ -9,13 +9,13 @@ android:orientation="vertical" >
 
 <LinearLayout
     android:id="@+id/popup_window"
-    android:layout_width="100dp"
-    android:layout_height="150dp"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/mac_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -29,7 +29,7 @@ android:orientation="vertical" >
         android:layout_below="@id/title"/>
 
     <TextView
-        android:id="@+id/content"
+        android:id="@+id/ip_info"
         android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,27 +37,30 @@ android:orientation="vertical" >
         android:layout_gravity="center_vertical"
         android:text="网卡" />
 
-    <LinearLayout
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:layout_below="@id/title"/>
+
+    <TextView
+        android:id="@+id/model_info"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_divider"
+        android:layout_gravity="center_vertical"
+        android:text="model" />
+
+
+
+    <Button
+        android:id="@+id/negativeBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:focusable="true"
+        android:text="button"/>
 
-        <Button
-            android:id="@+id/negativeBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:focusable="true"
-            android:text="button"/>
 
-        <Button
-            android:id="@+id/positiveBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:focusable="true"
-            android:text="button2"/>
-    </LinearLayout>
 </LinearLayout>
 
 </LinearLayout>

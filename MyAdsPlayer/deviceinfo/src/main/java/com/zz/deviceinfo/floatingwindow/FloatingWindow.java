@@ -12,9 +12,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.zz.deviceinfo.R;
 import com.zz.deviceinfo.application.App;
+import com.zz.deviceinfo.utils.DeviceInfoUtils;
+import com.zz.deviceinfo.utils.NetUtils;
 
 import static android.view.Gravity.apply;
 
@@ -133,21 +136,18 @@ public class FloatingWindow {
 
         Log.d(TAG, "setUpView: ");
 
-        View view = LayoutInflater.from(context).inflate(R.layout.floating_window,
-                null);
-        Button positiveBtn = (Button) view.findViewById(R.id.positiveBtn);
-        positiveBtn.setOnClickListener(new View.OnClickListener() {
+        View view = LayoutInflater.from(context).inflate(R.layout.floating_window,null);
+        TextView macInfo = view.findViewById(R.id.mac_info);
+        TextView ipInfo = view.findViewById(R.id.ip_info);
+        TextView modelInfo = view.findViewById(R.id.model_info);
 
-            @Override
-            public void onClick(View v) {
 
-                Log.d(TAG, "onClick: ok on click");
-                // 打开安装包
-                // 隐藏弹窗
-                FloatingWindow.hidePopupWindow();
+        macInfo.setText("mac: " + NetUtils.INSTANCE.getMac(mContext));
+        ipInfo.setText("ip: " + NetUtils.INSTANCE.getIPAddress(mContext));
+        modelInfo.setText("model: " + DeviceInfoUtils.INSTANCE.getDeviceModel());
 
-            }
-        });
+        DeviceInfoUtils.INSTANCE.infoCheck();
+
 
         Button negativeBtn = (Button) view.findViewById(R.id.negativeBtn);
         negativeBtn.setOnClickListener(new View.OnClickListener() {

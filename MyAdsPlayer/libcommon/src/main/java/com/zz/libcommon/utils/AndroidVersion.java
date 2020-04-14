@@ -1,4 +1,4 @@
-package com.zz.deviceinfo.utils;
+package com.zz.libcommon.utils;
 
 /**
  * @ProjectName: MyAdsPlayer
