@@ -71,6 +71,7 @@ public enum DeviceInfoUtils {
     }
 
     public void infoCheck() {
+
         Log.d(TAG, "getDeviceManufacturer: " + getDeviceManufacturer());
         Log.d(TAG, "getDeviceProduct: " + getDeviceProduct());
         Log.d(TAG, "getDeviceBrand: " + getDeviceBrand());

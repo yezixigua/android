@@ -32,6 +32,7 @@ allprojects {
             dirs 'libs'
         }
     }
+
 }
 
 task clean(type: Delete) {

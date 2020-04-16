@@ -1,5 +1,12 @@
 package com.zz.libcommon.net;
 
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 /**
  * @ProjectName: MyAdsPlayer
  * @Package: com.zz.libcommon.net
@@ -15,16 +22,50 @@ package com.zz.libcommon.net;
 public class MyRequest {
     private static final String TAG = "zz";
 
-    public final String SERVER_URL = "http://192.168.1.107:8080";
-    public final String IMAGE_SUB_ADDRESS = "/pic";
-    public final String VIDEO_SUB_ADDRESS = "/video";
-    public final String DOWNLOAD_SUB_ADDRESS = "/download";
-
-    public final String IMAGE_FOLDER = "pic";
-    public final String VIDEO_FOLDER = "video";
-
-    private final String DOWNLOAD_CACHE = "DOWNLOAD_CACHE";
+    public final String httpHeader = "http://";
+    public final String httpsHeader = "https://";
 
 
+
+    public String gteRequestBody(String url) {
+        String content = "";
+        String requestUrl = url;
+
+        if (requestUrl == null) {
+            return "";
+        }
+
+        if (!requestUrl.contains(httpHeader) && !requestUrl.contains(httpsHeader)) {
+            requestUrl = httpsHeader + requestUrl;
+        }
+
+        //创建OkHttpClient对象
+        try {
+            OkHttpClient client = new OkHttpClient();
+
+            //创建Request
+            Request request = new Request.Builder()
+                                         .url(requestUrl)
+                                         .get()
+                                         .build();
+            //创建Call对象
+            Call call = client.newCall(request);
+            //通过execute()方法获得请求响应的Response对象
+            Response response = null;
+
+            response = call.execute();
+
+
+            if (response.isSuccessful()) {
+                //获取输入流
+                content = response.body().string();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return content;
+
+
+    }
 
 }
