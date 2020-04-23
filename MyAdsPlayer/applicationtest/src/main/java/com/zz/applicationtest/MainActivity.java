@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import com.zz.libcommon.net.okhttp.CommonOkHttpClient;
 import com.zz.libcommon.net.okhttp.listener.DisposeDataHandle;
 import com.zz.libcommon.net.okhttp.listener.DisposeDataListener;
 import com.zz.libcommon.net.okhttp.request.CommonRequest;
+import com.zz.libcommon.net.okhttp.response.ResponseContent;
 import com.zz.libcommon.utils.DeviceInfoUtils;
 
 /**     
@@ -41,11 +43,14 @@ public class MainActivity extends AppCompatActivity {
         DeviceInfoUtils.INSTANCE.infoCheck();
 
         textView = findViewById(R.id.text);
+        textView.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         CommonOkHttpClient.get(CommonRequest.createGetRequest("https://www.baidu.com", null), new DisposeDataHandle(new DisposeDataListener() {
             @Override
             public void onSuccess(Object responseObj) {
-                textView.setText(responseObj.toString());
+                ResponseContent responseContent = (ResponseContent) responseObj;
+
+                textView.setText(responseContent.toString());
             }
 
             @Override

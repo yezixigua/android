@@ -79,7 +79,19 @@ public class CommonCallback implements Callback {
 
     @Override
     public void onResponse(final Call call, final Response response) throws IOException {
-        final String result = response.body().string();
+        ResponseContent responseContent = new ResponseContent();
+        responseContent.body = response.body().string();
+        responseContent.header = response.headers().toString();
+        responseContent.code = response.code();
+        responseContent.protocol = response.protocol().toString();
+        responseContent.message = response.message();
+        responseContent.handshake = response.handshake().toString();
+        responseContent.networkResponse = response.networkResponse().toString();
+        responseContent.cacheResponse = response.cacheResponse() != null ? response.cacheResponse().toString() : "";
+        responseContent.priorResponse = response.priorResponse()!= null ? response.priorResponse().toString() : "";
+        responseContent.sentRequestAtMillis = response.sentRequestAtMillis();
+        responseContent.receivedResponseAtMillis = response.receivedResponseAtMillis();
+
         final ArrayList<String> cookieLists = handleCookie(response.headers());
         mDeliveryHandler.post(new Runnable() {
             @Override
@@ -92,7 +104,7 @@ public class CommonCallback implements Callback {
 //                    ((DisposeHandleCookieListener) mListener).onCookie(cookieLists);
 //                }
 
-                mListener.onSuccess(result);
+                mListener.onSuccess(responseContent);
             }
         });
     }

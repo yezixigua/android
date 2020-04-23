@@ -3,6 +3,8 @@ package com.zz.myadsplayer;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,11 +12,13 @@ import android.widget.Button;
 
 import com.zz.myadsplayer.activity.MediaPlayerTest;
 import com.zz.myadsplayer.activity.NetworkState;
+import com.zz.myadsplayer.activity.NofiticationActivity;
 import com.zz.myadsplayer.broadcast.MyService;
 import com.zz.myadsplayer.contentprovider.ReadContacts;
 import com.zz.myadsplayer.contentprovider.TestMyProvider;
 import com.zz.myadsplayer.mytest.FragmentTest;
 import com.zz.myadsplayer.mytest.MyTest;
+import com.zz.myadsplayer.notificationHelper.NotificationHelper;
 import com.zz.myadsplayer.request.RequestServer;
 import com.zz.myadsplayer.service.TimeService;
 
@@ -51,9 +55,11 @@ public class MainActivity extends AppCompatActivity {
     private Button startService;
     private Button startBroadcastService;
     private Button sendBroadcast;
+    private Button sendNotifacation;
 
     private Button readContacts;
     private Button provider;
+    private NotificationHelper notificationHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +74,18 @@ public class MainActivity extends AppCompatActivity {
         myMediaPlayer = findViewById(R.id.media_player);
         startFragment = findViewById(R.id.start_fragment);
         startService = findViewById(R.id.service);
+        sendNotifacation = findViewById(R.id.send_notification);
 
         startBroadcastService = findViewById(R.id.start_broadcast_receive_service);
         sendBroadcast = findViewById(R.id.send_broadcast);
 
         readContacts = findViewById(R.id.read_contacts);
         provider = findViewById(R.id.content_provider);
+
+
+        Intent intent = new Intent(this, NofiticationActivity.class);
+        notificationHelper = new NotificationHelper(this, intent);
+        notificationHelper.initNotification();
 
         videoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,6 +186,13 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(MainActivity.this, TestMyProvider.class);
                 startActivity(intent);
+            }
+        });
+
+        sendNotifacation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notificationHelper.sendNotification();
             }
         });
 

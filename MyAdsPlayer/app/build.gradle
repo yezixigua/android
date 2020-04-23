@@ -38,6 +38,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.14.2'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.squareup.leakcanary:leakcanary-android:2.1'
+    implementation 'androidx.core:core:1.0.0'
 
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -46,4 +47,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    implementation project(':libcommon')
 }

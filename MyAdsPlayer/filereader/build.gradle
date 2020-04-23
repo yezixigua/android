@@ -3,6 +3,12 @@ apply plugin: 'com.android.application'
 def javaVersion = JavaVersion.VERSION_1_8
 
 android {
+
+    def baseVersion = "1.0.0"
+    def dot = "."
+    def cmd = 'git rev-list HEAD --count'
+    String gitVersion = cmd.execute().text.trim()
+
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
 
@@ -41,7 +47,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName baseVersion + dot + gitVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -133,7 +139,9 @@ dependencies {
     // Maven local cannot handle transist dependencies.
     implementation("com.tencent.tinker:tinker-android-loader:${TINKER_VERSION}") { changing = true }
 
-    annotationProcessor("com.tencent.tinker:tinker-android-anno:${TINKER_VERSION}") { changing = true }
+    annotationProcessor("com.tencent.tinker:tinker-android-anno:${TINKER_VERSION}") {
+        changing = true
+    }
     compileOnly("com.tencent.tinker:tinker-android-anno:${TINKER_VERSION}") { changing = true }
 
     implementation "androidx.multidex:multidex:2.0.1"
@@ -142,6 +150,8 @@ dependencies {
 //    implementation "org.scala-lang:scala-library:2.11.7"
 
     compileOnly 'com.android.support:support-annotations:28.0.0'
+
+    implementation project(':libcommon')
 
 }
 
@@ -331,7 +341,7 @@ if (buildWithTinker()) {
              */
             loader = [
 //                    //use sample, let BaseBuildInfo unchangeable with tinker
-                    "com.zz.filereader.application.MyApplication"
+"com.zz.filereader.application.MyApplication"
             ]
         }
 
@@ -519,7 +529,6 @@ if (buildWithTinker()) {
         }
     }
 }
-
 
 
 task sortPublicTxt() {
