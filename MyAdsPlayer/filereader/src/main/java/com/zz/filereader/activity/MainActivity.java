@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        Toast.makeText(this, "补丁版本5", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "补丁版本5", Toast.LENGTH_SHORT).show();
         Log.d(TAG, "onCreate: 补丁版本6");
 
         initToolBar();

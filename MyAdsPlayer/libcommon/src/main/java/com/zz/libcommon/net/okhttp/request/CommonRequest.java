@@ -1,5 +1,7 @@
 package com.zz.libcommon.net.okhttp.request;
 
+import android.util.Log;
+
 import java.io.File;
 import java.util.Map;
 
@@ -15,6 +17,8 @@ import okhttp3.RequestBody;
  * @function build the request
  */
 public class CommonRequest {
+
+	private static final String TAG = "CommonRequest";
 
 	/**
 	 * create the key-value Request
@@ -48,6 +52,7 @@ public class CommonRequest {
 				urlBuilder.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
 			}
 		}
+		Log.d(TAG, "createGetRequest: " + urlBuilder.substring(0, urlBuilder.length() - 1));
 		return new Request.Builder().url(urlBuilder.substring(0, urlBuilder.length() - 1)).get().build();
 	}
 

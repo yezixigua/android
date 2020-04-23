@@ -85,7 +85,7 @@ public class CommonCallback implements Callback {
         responseContent.code = response.code();
         responseContent.protocol = response.protocol().toString();
         responseContent.message = response.message();
-        responseContent.handshake = response.handshake().toString();
+        responseContent.handshake = response.handshake() != null ? response.handshake().toString() : "";
         responseContent.networkResponse = response.networkResponse().toString();
         responseContent.cacheResponse = response.cacheResponse() != null ? response.cacheResponse().toString() : "";
         responseContent.priorResponse = response.priorResponse()!= null ? response.priorResponse().toString() : "";

@@ -2,10 +2,20 @@ package com.zz.filereader.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.zz.filereader.R;
+import com.zz.filereader.openningadvertisement.AdvertisementPlay;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**     
   *
@@ -33,6 +43,28 @@ public class AdsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ads);
 
         imageView = findViewById(R.id.ads_image);
-        imageView.setImageResource(R.drawable.default_ads);
+
+        AdvertisementPlay advertisementPlay = new AdvertisementPlay(this);
+        advertisementPlay.getAdsConfig();
+
+        Bitmap imgBitmap = advertisementPlay.getRandomImg();
+        if (imgBitmap == null) {
+            imageView.setImageResource(R.drawable.default_ads);
+        } else {
+            imageView.setImageBitmap(imgBitmap);
+        }
+
+        ScheduledExecutorService mService = new ScheduledThreadPoolExecutor(1);
+
+        mService.scheduleAtFixedRate(new Runnable() {
+
+            @Override
+            public void run() {
+                mService.shutdown();
+                finish();
+            }
+
+        }, 5, 3, TimeUnit.SECONDS);
+
     }
 }

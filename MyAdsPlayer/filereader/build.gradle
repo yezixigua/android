@@ -152,6 +152,7 @@ dependencies {
     compileOnly 'com.android.support:support-annotations:28.0.0'
 
     implementation project(':libcommon')
+    implementation 'com.squareup.okhttp3:okhttp:3.14.2'
 
 }
 
