@@ -9,6 +9,7 @@ import android.util.Log;
 import com.zz.libcommon.net.okhttp.CommonOkHttpClient;
 import com.zz.libcommon.net.okhttp.listener.DisposeDataHandle;
 import com.zz.libcommon.net.okhttp.listener.DisposeDataListener;
+import com.zz.libcommon.net.okhttp.listener.DisposeDownloadListener;
 import com.zz.libcommon.net.okhttp.request.CommonRequest;
 import com.zz.libcommon.net.okhttp.response.ResponseContent;
 
@@ -50,7 +51,12 @@ public class AdvertisementPlay {
 
     public AdvertisementPlay(Context context) {
         mContext = context;
-        imgCacheFolder = new File(mContext.getExternalCacheDir().getPath() + File.separator + imgCache);
+        imgCacheFolder = new File(mContext.getFilesDir().getPath() + File.separator + imgCache);
+
+        if(!imgCacheFolder.exists()) {
+            Log.d(TAG, "cache folder not exist ");
+            imgCacheFolder.mkdir();
+        }
     }
 
 
@@ -109,20 +115,26 @@ public class AdvertisementPlay {
     }
 
     public void downloadAds(String name, String url) {
-        CommonOkHttpClient.get(CommonRequest.createGetRequest(url, null), new DisposeDataHandle(new DisposeDataListener() {
+        CommonOkHttpClient.downloadFile(CommonRequest.createGetRequest(url, null), new DisposeDataHandle(new DisposeDownloadListener() {
+            @Override
+            public void onProgress(int progrss) {
+                Log.d(TAG, "onProgress: " + progrss);
+            }
+
             @Override
             public void onSuccess(Object responseObj) {
                 Log.d(TAG, "downloadAds Success");
-                ResponseContent responseContent = (ResponseContent) responseObj;
+                Log.d(TAG, "downloadAds path: " + ((File)responseObj).getPath());
+//                ResponseContent responseContent = (ResponseContent) responseObj;
 
-                writeCache(name, responseContent.body);
+//                writeCache(name, responseContent.body);
             }
 
             @Override
             public void onFailure(Object reasonObj) {
                 Log.d(TAG, "onFailure: downloadAds");
             }
-        }));
+        }, imgCacheFolder.getPath() + File.separator + name));
     }
 
     public void writeCache(String name, String content) {
@@ -158,16 +170,17 @@ public class AdvertisementPlay {
 
     }
 
-    public Bitmap getRandomImg() {
+    public Uri getRandomImg() {
 
         File[] files = imgCacheFolder.listFiles();
         Random random = new Random();
 
-        if(files == null) {
+        if(files == null || files.length == 0) {
             return null;
         }
 
-        Bitmap bitmap = BitmapFactory.decodeFile(files[random.nextInt(files.length)].getPath());
-        return bitmap;
+        Uri imgUri = Uri.fromFile(files[random.nextInt(files.length)]);
+        Log.d(TAG, "getRandomImg: " + imgUri);
+        return imgUri;
     }
 }

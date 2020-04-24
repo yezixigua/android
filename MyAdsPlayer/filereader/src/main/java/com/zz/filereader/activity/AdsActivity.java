@@ -47,11 +47,11 @@ public class AdsActivity extends AppCompatActivity {
         AdvertisementPlay advertisementPlay = new AdvertisementPlay(this);
         advertisementPlay.getAdsConfig();
 
-        Bitmap imgBitmap = advertisementPlay.getRandomImg();
-        if (imgBitmap == null) {
+        Uri imgUri = advertisementPlay.getRandomImg();
+        if (imgUri == null) {
             imageView.setImageResource(R.drawable.default_ads);
         } else {
-            imageView.setImageBitmap(imgBitmap);
+            imageView.setImageURI(imgUri);
         }
 
         ScheduledExecutorService mService = new ScheduledThreadPoolExecutor(1);
