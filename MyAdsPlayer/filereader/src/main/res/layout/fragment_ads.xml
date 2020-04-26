@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.AdsFragment">
+
+    <ImageView
+        android:id="@+id/ads_image"
+        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/remain_time"
+        android:text="3s"
+        android:gravity="center"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="3dp"
+        android:textSize="20dp"
+        android:layout_gravity="right|top"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+
+        android:background="@color/colorGreyTransparent" />
+
+</FrameLayout>

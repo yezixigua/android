@@ -14,11 +14,19 @@
         android:roundIcon="@mipmap/launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.AdsActivity"></activity>
+        <activity android:name=".contentviewer.vieweractivity.AudioPlayerActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".contentviewer.vieweractivity.VideoPlayerActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".contentviewer.vieweractivity.ImageReaderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".contentviewer.vieweractivity.TextReaderActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
             android:requestLegacyExternalStorage="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -6,7 +6,7 @@
 
     <ImageView
         android:id="@+id/item_image"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="match_parent" />
 
     <LinearLayout
@@ -16,6 +16,7 @@
 
         <TextView
             android:id="@+id/item_name"
+            android:textColor="@color/colorGrey"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -26,12 +27,14 @@
 
             <TextView
                 android:paddingRight="10dp"
+                android:textColor="@color/colorGrey"
                 android:id="@+id/item_create_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/item_size"
+                android:textColor="@color/colorGrey"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
