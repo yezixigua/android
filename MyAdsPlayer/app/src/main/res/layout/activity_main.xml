@@ -54,6 +54,12 @@
             android:layout_height="wrap_content"
             android:text="发送通知" />
 
+        <Button
+            android:id="@+id/custom_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="事件分发与自定义view" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -97,6 +103,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="内容提供" />
+
+        <Button
+            android:id="@+id/implicit_intent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="隐式意图" />
 
     </LinearLayout>
 

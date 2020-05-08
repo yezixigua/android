@@ -4,16 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.zz.filereader.R;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
   *
@@ -37,9 +46,19 @@ public class AudioPlayerActivity extends AppCompatActivity implements View.OnCli
     private Button pause;
     private Button stop;
 
+    private TextView currentTimeText;
+    private TextView totalTimeText;
+    private SeekBar seekBar;
+    private int totalTime = 0;
+    private boolean isTracking = false;
+
     private MediaPlayer mMediaPlayer;
     private SurfaceView mAudioPlaySurfaceView;
     private SurfaceHolder mSurfaceHolder;
+
+    private ScheduledExecutorService timeRecordService = new ScheduledThreadPoolExecutor(1);
+
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +70,10 @@ public class AudioPlayerActivity extends AppCompatActivity implements View.OnCli
         stop = findViewById(R.id.audio_stop);
         mAudioPlaySurfaceView = findViewById(R.id.audio_player);
 
+        currentTimeText = findViewById(R.id.audio_current_time);
+        totalTimeText = findViewById(R.id.audio_total_time);
+        seekBar = findViewById(R.id.audio_seek_bar);
+
         play.setOnClickListener(this);
         pause.setOnClickListener(this);
         stop.setOnClickListener(this);
@@ -58,6 +81,7 @@ public class AudioPlayerActivity extends AppCompatActivity implements View.OnCli
         File file = (File)(getIntent().getSerializableExtra("file"));
 
         initVideoPlayer(file);
+
     }
 
     private void initVideoPlayer(File audioFile) {
@@ -87,6 +111,9 @@ public class AudioPlayerActivity extends AppCompatActivity implements View.OnCli
                         mMediaPlayer.setLooping(false);//设置循环播放
 //                        当准备好后不播放，注掉这里
                         mMediaPlayer.start();
+                        initSeekBar();
+                        initTimeRecord();
+                        Log.d(TAG, "initSeekBar: ");
                     }
                 });
 
@@ -114,6 +141,84 @@ public class AudioPlayerActivity extends AppCompatActivity implements View.OnCli
 
             }
         });
+    }
+
+    private void initSeekBar() {
+
+        // 总时长
+        totalTime = mMediaPlayer.getDuration() / 1000;
+        totalTimeText.setText(calculateTime(totalTime));
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                // 获取当前播放的位置
+                if (isTracking) {
+                    Log.d(TAG, "onProgressChanged: progress " + progress);
+                    mMediaPlayer.seekTo(totalTime * 1000 * progress / 100);
+                }
+
+                int currentTime = mMediaPlayer.getCurrentPosition();
+                currentTimeText.setText(calculateTime(currentTime / 1000));
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                isTracking = true;
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                isTracking = false;
+
+//                mMediaPlayer.seekTo(seekBar.getProgress());//在当前位置播放
+//                currentTimeText.setText(calculateTime(mMediaPlayer.getCurrentPosition() / 1000));
+
+            }
+        });
+    }
+
+    private void initTimeRecord() {
+        timeRecordService.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                int currentTime = mMediaPlayer.getCurrentPosition();
+//                Log.d(TAG, "计时 currentTime： " + currentTime);
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        currentTimeText.setText(calculateTime(currentTime / 1000));
+                        if (!isTracking) {
+//                            Log.d(TAG, "getCurrentPosition： " + currentTime);
+                            seekBar.setProgress(mMediaPlayer.getCurrentPosition() * 100 / (totalTime * 1000));
+                        }
+
+
+                    }
+                });
+
+            }
+        }, 0, 500, TimeUnit.MILLISECONDS);
+    }
+
+    private String calculateTime(int timeInt) {
+        String timeString = "";
+        int minuteNum = 0;
+        int secondNum = 0;
+
+        secondNum = timeInt % 60;
+        minuteNum = timeInt / 60;
+
+        if (minuteNum > 60) {
+            timeString = "60:00";
+        } else {
+            timeString = String.format("%02d:%02d", minuteNum, secondNum);
+        }
+
+        return timeString;
     }
 
     @Override

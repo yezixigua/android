@@ -133,7 +133,14 @@ public class FileListFragment extends Fragment {
 
                     fileList.clear();
                     for (File fileItem: currentFiles) {
-                        fileList.add(new ListItem(fileItem));
+                        if (fileItem.isDirectory()) {
+                            fileList.add(new ListItem(fileItem));
+                        }
+                    }
+                    for (File fileItem: currentFiles) {
+                        if (fileItem.isFile()) {
+                            fileList.add(new ListItem(fileItem));
+                        }
                     }
                     adapter.notifyDataSetChanged();
 
@@ -210,9 +217,14 @@ public class FileListFragment extends Fragment {
 
                 fileList.clear();
                 for (File fileItem: currentFiles) {
-
-                    fileList.add(new ListItem(fileItem));
-
+                    if (fileItem.isDirectory()) {
+                        fileList.add(new ListItem(fileItem));
+                    }
+                }
+                for (File fileItem: currentFiles) {
+                    if (fileItem.isFile()) {
+                        fileList.add(new ListItem(fileItem));
+                    }
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -239,7 +251,14 @@ public class FileListFragment extends Fragment {
         currentFiles = sdcardFolder.listFiles();
 
         for (File fileItem: currentFiles) {
-            fileList.add(new ListItem(fileItem));
+            if (fileItem.isDirectory()) {
+                fileList.add(new ListItem(fileItem));
+            }
+        }
+        for (File fileItem: currentFiles) {
+            if (fileItem.isFile()) {
+                fileList.add(new ListItem(fileItem));
+            }
         }
         adapter.notifyDataSetChanged();
 
@@ -267,7 +286,14 @@ public class FileListFragment extends Fragment {
 
             fileList.clear();
             for (File fileItem: currentFiles) {
-                fileList.add(new ListItem(fileItem));
+                if (fileItem.isDirectory()) {
+                    fileList.add(new ListItem(fileItem));
+                }
+            }
+            for (File fileItem: currentFiles) {
+                if (fileItem.isFile()) {
+                    fileList.add(new ListItem(fileItem));
+                }
             }
             adapter.notifyDataSetChanged();
             return 1;

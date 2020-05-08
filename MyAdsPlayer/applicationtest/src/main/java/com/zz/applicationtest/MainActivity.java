@@ -3,6 +3,8 @@ package com.zz.applicationtest;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -51,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
                 ResponseContent responseContent = (ResponseContent) responseObj;
 
                 textView.setText(responseContent.toString());
+//                Intent intent = new Intent(Intent.ACTION_VIEW);
+//                intent.setData(Uri.parse("https://www.baidu.com"));
+//                startActivity(intent);
             }
 
             @Override

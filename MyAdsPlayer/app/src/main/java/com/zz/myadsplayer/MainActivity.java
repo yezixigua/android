@@ -6,10 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.zz.myadsplayer.activity.CustomViewActivity;
 import com.zz.myadsplayer.activity.MediaPlayerTest;
 import com.zz.myadsplayer.activity.NetworkState;
 import com.zz.myadsplayer.activity.NofiticationActivity;
@@ -61,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
     private Button provider;
     private NotificationHelper notificationHelper;
 
+    private Button implicitIntent;
+    private Button customViewButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
 
         readContacts = findViewById(R.id.read_contacts);
         provider = findViewById(R.id.content_provider);
+
+        implicitIntent = findViewById(R.id.implicit_intent);
+        customViewButton = findViewById(R.id.custom_view);
 
 
         Intent intent = new Intent(this, NofiticationActivity.class);
@@ -193,6 +201,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 notificationHelper.sendNotification();
+            }
+        });
+
+        implicitIntent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://www.baidu.com"));
+                startActivity(intent);
+            }
+        });
+
+        customViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CustomViewActivity.class);
+                startActivity(intent);
             }
         });
 
