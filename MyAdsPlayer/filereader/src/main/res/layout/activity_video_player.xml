@@ -10,40 +10,71 @@
     <SurfaceView android:id="@+id/video_player"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"/>
-
-    <!--    <VideoView-->
-    <!--        android:id="@+id/video_view"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:layout_weight="4"/>-->
+        android:layout_weight="1"/>
 
     <LinearLayout
+        android:id="@+id/video_control_panel"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content" >
 
-        <Button
-            android:id="@+id/video_play"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Play" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/video_pause"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Pause" />
+            <TextView
+                android:text="00:00:00"
+                android:id="@+id/video_current_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/video_stop"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Stop" />
+            <SeekBar
+                android:id="@+id/video_seek_bar"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
 
+            <TextView
+                android:text="00:00:00"
+                android:id="@+id/video_total_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:alpha="0.2"
+                android:id="@+id/video_play"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Play" />
+
+            <Button
+                android:alpha="0.2"
+                android:id="@+id/video_pause"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Pause" />
+
+            <Button
+                android:alpha="0.2"
+                android:id="@+id/video_stop"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Stop" />
+
+        </LinearLayout>
     </LinearLayout>
+
+
 
 </LinearLayout>
