@@ -4,7 +4,7 @@ def javaVersion = JavaVersion.VERSION_1_8
 
 android {
 
-    def baseVersion = "1.0.0"
+    def baseVersion = "1.1.0"
     def dot = "."
     def cmd = 'git rev-list HEAD --count'
     String gitVersion = cmd.execute().text.trim()
