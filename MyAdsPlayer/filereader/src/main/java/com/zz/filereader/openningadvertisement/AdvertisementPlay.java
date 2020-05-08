@@ -41,9 +41,9 @@ import java.util.Random;
 public class AdvertisementPlay {
 
     private static final String TAG = "AdvertisementPlay";
-    static final String baseUrl = "http://www.yezixigua.cn:3000";
-    static final String configUrl = baseUrl + "/ads";
-    static final String imgCache = "imgCache";
+    private static final String baseUrl = "http://www.yezixigua.cn:3000";
+    private static final String configUrl = baseUrl + "/ads";
+    private static final String imgCache = "imgCache";
     File imgCacheFolder;
 
     private Context mContext;

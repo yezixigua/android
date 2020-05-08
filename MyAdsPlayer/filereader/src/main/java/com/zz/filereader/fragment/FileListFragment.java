@@ -165,9 +165,9 @@ public class FileListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch ( id ){
-//            case R.id.menu_1 :
-//                Toast.makeText(MainActivity.this,"you click menu_1" ,Toast.LENGTH_LONG).show();
-//                break;
+            case R.id.check_update :
+
+                break;
 //            case R.id.menu_2 :
 //                Toast.makeText(MainActivity.this,"you click menu_2" ,Toast.LENGTH_LONG).show();
 //                break;

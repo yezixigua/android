@@ -10,6 +10,7 @@ import com.zz.filereader.R;
 import com.zz.filereader.adapter.ListItemAdapter;
 import com.zz.filereader.fragment.AdsFragment;
 import com.zz.filereader.fragment.FileListFragment;
+import com.zz.filereader.update.CheckUpdateService;
 import com.zz.filereader.view.ListItem;
 
 import androidx.annotation.NonNull;
@@ -94,7 +95,14 @@ public class MainActivity extends AppCompatActivity {
 
         }
         initView();
+        checkUpdateService();
 
+
+    }
+
+    private void checkUpdateService() {
+        Intent intent = new Intent(this, CheckUpdateService.class);
+        startService(intent);
     }
 
     private void initView() {

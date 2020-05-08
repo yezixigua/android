@@ -14,8 +14,17 @@
         android:roundIcon="@mipmap/launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".contentviewer.vieweractivity.AudioPlayerActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".contentviewer.vieweractivity.VideoPlayerActivity" android:screenOrientation="landscape"/>
+        <service
+            android:name=".update.CheckUpdateService"
+            android:enabled="true"
+            android:exported="false"></service>
+
+        <activity
+            android:name=".contentviewer.vieweractivity.AudioPlayerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".contentviewer.vieweractivity.VideoPlayerActivity"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".contentviewer.vieweractivity.ImageReaderActivity"
             android:screenOrientation="portrait" />
