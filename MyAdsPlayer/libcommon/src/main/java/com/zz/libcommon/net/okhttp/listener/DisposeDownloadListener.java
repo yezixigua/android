@@ -5,5 +5,5 @@ package com.zz.libcommon.net.okhttp.listener;
  * @function 监听下载进度
  */
 public interface DisposeDownloadListener extends DisposeDataListener {
-	public void onProgress(int progrss);
+	public void onProgress(int progress);
 }

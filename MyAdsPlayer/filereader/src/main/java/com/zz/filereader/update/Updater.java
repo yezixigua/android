@@ -4,9 +4,11 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.zz.filereader.utils.PackageUtils;
 import com.zz.libcommon.net.okhttp.CommonOkHttpClient;
 import com.zz.libcommon.net.okhttp.listener.DisposeDataHandle;
 import com.zz.libcommon.net.okhttp.listener.DisposeDataListener;
+import com.zz.libcommon.net.okhttp.listener.DisposeDownloadListener;
 import com.zz.libcommon.net.okhttp.request.CommonRequest;
 import com.zz.libcommon.net.okhttp.response.ResponseContent;
 
@@ -49,16 +51,39 @@ public class Updater {
     public static final String DOWNLOAD_UURL = "http://192.168.1.107/apk";
     private static final String APK_CACHE = "apkCache";
     private static final String APK_INFO = "apkInfo";
+    private static final String APK = "filereader-release.apk";
     private File apkCacheFolder;
+    private File apkInfoFile;
+    public File apkFile;
 
     public Updater(Context context) {
         this.mContext = context;
 
         apkCacheFolder = new File(mContext.getFilesDir().getPath() + File.separator + APK_CACHE);
+        apkInfoFile = new File(apkCacheFolder.getPath() + File.separator + APK_INFO);
+        apkFile = new File(apkCacheFolder.getPath() + File.separator + APK);
 
         if(!apkCacheFolder.exists()) {
             Log.d(TAG, "apk folder not exist ");
             apkCacheFolder.mkdir();
+        }
+
+        if(!apkInfoFile.exists()) {
+            Log.d(TAG, "apk folder not exist ");
+            try {
+                apkInfoFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(!apkFile.exists()) {
+            Log.d(TAG, "apk not exist ");
+            try {
+                apkFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -70,7 +95,27 @@ public class Updater {
                 ResponseContent responseContent = (ResponseContent) responseObj;
                 ApkInfo apkInfo = parseConfig(responseContent.body);
                 Log.d(TAG, "apkInfo: \n" + apkInfo.toString());
-                serialToFile(apkInfo);
+
+                ApkInfo existApkInfo = readInfoFromFile(apkInfoFile);
+
+                // 如果为空，即需要更新信息
+                if (existApkInfo == null) {
+                    serialToFile(apkInfo);
+                    getLatestApk(apkInfo);
+
+                } else if (isInfoUpdated(apkInfo.version, existApkInfo.version)) {
+                    // 如果不是最新版
+                    // 旧版本删除，重新写入新版本信息
+
+                    apkInfoFile.delete();
+                    serialToFile(apkInfo);
+                    getLatestApk(apkInfo);
+                }
+
+
+
+
+
             }
 
             @Override
@@ -88,42 +133,62 @@ public class Updater {
 
     }
 
-    public File serialToFile(ApkInfo apkInfo) {
-        File apkInfoFile = new File(mContext.getFilesDir().getPath() + File.separator + APK_INFO);
-        // 文件若不存在，则新建一个
-        if (apkInfoFile.exists()) {
-            ApkInfo existApkInfo = readInfoFromFile(apkInfoFile);
+    public synchronized File serialToFile(ApkInfo apkInfo) {
 
-            // 若文件存在，则比较版本号
-            // 旧版本删除，重新写入新版本信息
-            if (isInfoUpdated(apkInfo, existApkInfo)) {
-                apkInfoFile.delete();
-                try {
-                    ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(apkInfoFile));
-                    os.writeObject(apkInfo);
-                    os.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        } else {
-            try {
+        try {
+            // 文件若不存在，则新建一个
+            if (!apkInfoFile.exists()) {
                 apkInfoFile.createNewFile();
-                ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(apkInfoFile));
-                os.writeObject(apkInfo);
-                os.close();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+
+            ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(apkInfoFile));
+            os.writeObject(apkInfo);
+            os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return apkInfoFile;
     }
 
-    public boolean isInfoUpdated(ApkInfo newInfo, ApkInfo oldInfo) {
+    public void getLatestApk(ApkInfo apkInfo) {
 
-        List<String> newVersion = Arrays.asList(newInfo.getVersion().split("."));
-        List<String> oldVersion = Arrays.asList(newInfo.getVersion().split("."));
+        if (apkFile.exists()) {
+            apkFile.delete();
+        }
+
+        CommonOkHttpClient.downloadFile(CommonRequest.createGetRequest(apkInfo.url, null), new DisposeDataHandle(new DisposeDownloadListener() {
+            @Override
+            public void onProgress(int progress) {
+                Log.d(TAG, "onProgress: " + progress);
+            }
+
+            @Override
+            public void onSuccess(Object responseObj) {
+                Log.d(TAG, "downloadAds Success");
+                Log.d(TAG, "downloadAds path: " + ((File)responseObj).getPath());
+//                ResponseContent responseContent = (ResponseContent) responseObj;
+
+//                writeCache(name, responseContent.body);
+            }
+
+            @Override
+            public void onFailure(Object reasonObj) {
+                Log.d(TAG, "onFailure: downloadAds");
+            }
+        }, apkFile.getPath()));
+
+    }
+
+    /***
+     *
+     * @param newInfo
+     * @param oldInfo
+     * @return true if need update false if not
+     */
+    public boolean isInfoUpdated(String newInfo, String oldInfo) {
+
+        List<String> newVersion = Arrays.asList(newInfo.split("."));
+        List<String> oldVersion = Arrays.asList(oldInfo.split("."));
 
         if (newVersion.size() != ApkInfo.VERSION_NUMBER || oldVersion.size() != ApkInfo.VERSION_NUMBER) {
             // 在长度不对时不更新
@@ -157,4 +222,29 @@ public class Updater {
         return null;
 
     }
+
+    /***
+     *
+     * @return true if is latest false if not
+     */
+    public boolean checkCurrentPackageLatest() {
+        ApkInfo apkInfo = readInfoFromFile(apkInfoFile);
+
+        String currentPackageVersion = PackageUtils.getVersionName(mContext);
+
+        Log.d(TAG, "currentPackageVersion: " + currentPackageVersion);
+        Log.d(TAG, "apkInfo: \n" + apkInfo.toString());
+
+        if (isInfoUpdated(apkInfo.version, currentPackageVersion)) {
+            Log.d(TAG, "checkCurrentPackageLatest: 需要更新");
+            return false;
+        } else {
+            Log.d(TAG, "checkCurrentPackageLatest: 已经是最新的了");
+            return true;
+        }
+
+
+    }
+
+
 }

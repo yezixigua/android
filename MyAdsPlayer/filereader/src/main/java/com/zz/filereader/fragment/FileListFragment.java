@@ -2,6 +2,7 @@ package com.zz.filereader.fragment;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import android.widget.Toast;
 import com.zz.filereader.R;
 import com.zz.filereader.adapter.ListItemAdapter;
 import com.zz.filereader.contentviewer.FileJudge;
+import com.zz.filereader.update.Updater;
 import com.zz.filereader.utils.ApplicationContext;
 import com.zz.filereader.view.ListItem;
 
@@ -166,6 +168,15 @@ public class FileListFragment extends Fragment {
         int id = item.getItemId();
         switch ( id ){
             case R.id.check_update :
+                Updater updater = new Updater(mContext);
+                if (!updater.checkCurrentPackageLatest()) {
+                    Intent intent = new Intent();
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setAction(Intent.ACTION_VIEW);
+                    Uri uri = Uri.fromFile(updater.apkFile);
+                    intent.setDataAndType(uri, "application/vnd.android.package-archive");
+                    getActivity().startActivity(intent);
+                }
 
                 break;
 //            case R.id.menu_2 :
