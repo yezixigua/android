@@ -171,15 +171,11 @@ public class FileListFragment extends Fragment {
             case R.id.check_update :
                 Updater updater = new Updater(mContext);
                 if (!updater.checkCurrentPackageLatest()) {
-                    Intent intent = new Intent();
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.setAction(Intent.ACTION_VIEW);
 
-                    Uri uri = Uri.fromFile(updater.apkFile);
-                    intent.setDataAndType(uri, "application/vnd.android.package-archive");
-                    getActivity().startActivity(intent);
+                    updater.installApk(updater.apkFile);
+                } else {
+                    Toast.makeText(mContext,"已经是最新的了", Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(mContext,"已经是最新的了", Toast.LENGTH_SHORT).show();
 
                 break;
 //            case R.id.menu_2 :

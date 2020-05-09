@@ -1,6 +1,9 @@
 package com.zz.filereader.update;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -26,6 +29,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.PrimitiveIterator;
+
+import androidx.core.content.FileProvider;
 
 /**
  * @ProjectName: MyAdsPlayer
@@ -249,6 +254,25 @@ public class Updater {
         }
 
 
+    }
+
+    public void installApk(File file) {
+        Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setAction(Intent.ACTION_VIEW);
+
+        Uri uri;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            // 增加读写权限
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            String packageName = mContext.getPackageName();
+            uri = FileProvider.getUriForFile(mContext, packageName + ".fileProvider", file);
+        } else {
+            uri = Uri.fromFile(file);
+        }
+        intent.setDataAndType(uri, "application/vnd.android.package-archive");
+        mContext.startActivity(intent);
     }
 
 
