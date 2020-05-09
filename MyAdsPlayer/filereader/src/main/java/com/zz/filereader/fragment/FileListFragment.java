@@ -175,10 +175,6 @@ public class FileListFragment extends Fragment {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.setAction(Intent.ACTION_VIEW);
 
-////                    排除data目录无法读取的可能性
-//                    File copyFile = new File(getSdCardPath() + File.separator + "copyFile");
-//                    copySdcardFile(updater.apkFile.getPath(), copyFile.getPath());
-
                     Uri uri = Uri.fromFile(updater.apkFile);
                     intent.setDataAndType(uri, "application/vnd.android.package-archive");
                     getActivity().startActivity(intent);
