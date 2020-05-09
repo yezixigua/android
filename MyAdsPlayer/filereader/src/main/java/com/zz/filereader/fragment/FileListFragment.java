@@ -41,6 +41,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.zz.filereader.utils.Utils.copySdcardFile;
 import static com.zz.filereader.utils.Utils.getSdCardPath;
 import static com.zz.filereader.utils.Utils.isSdCardExist;
 
@@ -173,10 +174,16 @@ public class FileListFragment extends Fragment {
                     Intent intent = new Intent();
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.setAction(Intent.ACTION_VIEW);
+
+////                    排除data目录无法读取的可能性
+//                    File copyFile = new File(getSdCardPath() + File.separator + "copyFile");
+//                    copySdcardFile(updater.apkFile.getPath(), copyFile.getPath());
+
                     Uri uri = Uri.fromFile(updater.apkFile);
                     intent.setDataAndType(uri, "application/vnd.android.package-archive");
                     getActivity().startActivity(intent);
                 }
+                Toast.makeText(mContext,"已经是最新的了", Toast.LENGTH_SHORT).show();
 
                 break;
 //            case R.id.menu_2 :

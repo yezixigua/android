@@ -47,6 +47,7 @@ public class CheckUpdateService extends Service {
         timeRecordService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
+                Log.d(TAG, "run: 30min 运行一次");
                 updater.checkLatestVersion();
             }
         },0,30, TimeUnit.MINUTES);

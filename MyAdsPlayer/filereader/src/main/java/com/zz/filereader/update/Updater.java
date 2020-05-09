@@ -59,7 +59,7 @@ public class Updater {
     public Updater(Context context) {
         this.mContext = context;
 
-        apkCacheFolder = new File(mContext.getFilesDir().getPath() + File.separator + APK_CACHE);
+        apkCacheFolder = new File(mContext.getExternalCacheDir().getPath() + File.separator + APK_CACHE);
         apkInfoFile = new File(apkCacheFolder.getPath() + File.separator + APK_INFO);
         apkFile = new File(apkCacheFolder.getPath() + File.separator + APK);
 
@@ -94,12 +94,18 @@ public class Updater {
                 Log.d(TAG, "getApkVersion Success");
                 ResponseContent responseContent = (ResponseContent) responseObj;
                 ApkInfo apkInfo = parseConfig(responseContent.body);
-                Log.d(TAG, "apkInfo: \n" + apkInfo.toString());
 
                 ApkInfo existApkInfo = readInfoFromFile(apkInfoFile);
 
+                if (existApkInfo != null) {
+                    Log.d(TAG, "checkLatestVersion existApkInfo: " + existApkInfo.toString());
+                }
+
+                Log.d(TAG, "checkLatestVersion 读取网络的: \n" + apkInfo.toString());
+
                 // 如果为空，即需要更新信息
                 if (existApkInfo == null) {
+                    Log.d(TAG, "existApkInfo为空，需要更新信息 ");
                     serialToFile(apkInfo);
                     getLatestApk(apkInfo);
 
@@ -107,14 +113,13 @@ public class Updater {
                     // 如果不是最新版
                     // 旧版本删除，重新写入新版本信息
 
+                    Log.d(TAG, "删除原来的apkInfoFile，重新写入");
                     apkInfoFile.delete();
                     serialToFile(apkInfo);
                     getLatestApk(apkInfo);
                 }
 
-
-
-
+                Log.d(TAG, "已经是最新版，不需要更新");
 
             }
 
@@ -187,8 +192,8 @@ public class Updater {
      */
     public boolean isInfoUpdated(String newInfo, String oldInfo) {
 
-        List<String> newVersion = Arrays.asList(newInfo.split("."));
-        List<String> oldVersion = Arrays.asList(oldInfo.split("."));
+        List<String> newVersion = Arrays.asList(newInfo.split("[.]"));
+        List<String> oldVersion = Arrays.asList(oldInfo.split("[.]"));
 
         if (newVersion.size() != ApkInfo.VERSION_NUMBER || oldVersion.size() != ApkInfo.VERSION_NUMBER) {
             // 在长度不对时不更新
@@ -232,8 +237,8 @@ public class Updater {
 
         String currentPackageVersion = PackageUtils.getVersionName(mContext);
 
-        Log.d(TAG, "currentPackageVersion: " + currentPackageVersion);
-        Log.d(TAG, "apkInfo: \n" + apkInfo.toString());
+        Log.d(TAG, "checkCurrentPackageLatest currentPackageVersion: " + currentPackageVersion);
+        Log.d(TAG, "checkCurrentPackageLatest 读取的当前缓存apkInfo: \n" + apkInfo.toString());
 
         if (isInfoUpdated(apkInfo.version, currentPackageVersion)) {
             Log.d(TAG, "checkCurrentPackageLatest: 需要更新");
