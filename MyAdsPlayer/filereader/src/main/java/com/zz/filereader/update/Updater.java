@@ -49,11 +49,11 @@ public class Updater {
     private static final String TAG = "Updater";
 
     private Context mContext;
-//    public static final String CHECK_UPDATE_URL = "http://www.yezixigua.cn:3000/apk_version";
-//    public static final String DOWNLOAD_UURL = "http://www.yezixigua.cn:3000/apk";
+    public static final String CHECK_UPDATE_URL = "http://www.yezixigua.cn:3000/apk_version";
+    public static final String DOWNLOAD_UURL = "http://www.yezixigua.cn:3000/apk";
 
-    public static final String CHECK_UPDATE_URL = "http://192.168.1.107/apk_version";
-    public static final String DOWNLOAD_UURL = "http://192.168.1.107/apk";
+//    public static final String CHECK_UPDATE_URL = "http://192.168.1.107/apk_version";
+//    public static final String DOWNLOAD_UURL = "http://192.168.1.107:3000/apk";
     private static final String APK_CACHE = "apkCache";
     private static final String APK_INFO = "apkInfo";
     private static final String APK = "filereader-release.apk";
@@ -239,6 +239,11 @@ public class Updater {
      */
     public boolean checkCurrentPackageLatest() {
         ApkInfo apkInfo = readInfoFromFile(apkInfoFile);
+
+        if (apkInfo == null) {
+            Log.d(TAG, "checkCurrentPackageLatest: 无apkInfo缓存，认为是最新");
+            return true;
+        }
 
         String currentPackageVersion = PackageUtils.getVersionName(mContext);
 

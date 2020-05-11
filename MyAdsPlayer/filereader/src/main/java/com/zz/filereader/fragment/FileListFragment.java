@@ -13,6 +13,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.KeyEvent;
@@ -32,6 +35,8 @@ import android.widget.Toast;
 
 import com.zz.filereader.R;
 import com.zz.filereader.adapter.ListItemAdapter;
+import com.zz.filereader.adapter.OnRecyclerItemClickListener;
+import com.zz.filereader.adapter.RecyclerListItemAdapter;
 import com.zz.filereader.contentviewer.FileJudge;
 import com.zz.filereader.update.Updater;
 import com.zz.filereader.utils.ApplicationContext;
@@ -63,8 +68,8 @@ public class FileListFragment extends Fragment {
     private static final String TAG = "FileListFragment";
 
     View mView;
-    ListView listView;
-    ArrayAdapter<ListItem> adapter;
+    RecyclerView recyclerView;
+    RecyclerListItemAdapter adapter;
     List<ListItem> fileList = new ArrayList<ListItem>();
 
     String currentDirStr = "";
@@ -111,17 +116,18 @@ public class FileListFragment extends Fragment {
         pathText = mView.findViewById(R.id.path_text);
 
         // listView用法
-        listView = mView.findViewById(R.id.content_list);
-        adapter = new ListItemAdapter(mContext, R.layout.list_item, fileList);
-        listView.setAdapter(adapter);
+        recyclerView = mView.findViewById(R.id.content_list);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        adapter = new RecyclerListItemAdapter(fileList);
+        recyclerView.setAdapter(adapter);
 
         // list中的元素的点击事件
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        adapter.setRecyclerItemClickListener(new OnRecyclerItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+            public void onItemClick(int position, List<ListItem> listItems) {
                 // 拿到当前点击的元素
-                ListItem currentFile = fileList.get(position);
+                ListItem currentFile = listItems.get(position);
 
                 // 判断当前元素是否是目录，如果是目录，就可以下一步展开路径，如果是文件，就不展开了
                 String tmp = currentDirStr + File.separator + currentFile.getName();
@@ -151,7 +157,6 @@ public class FileListFragment extends Fragment {
                     fileJudge.setFile(tmpFile);
                     fileJudge.viewFile();
                 }
-
             }
         });
 

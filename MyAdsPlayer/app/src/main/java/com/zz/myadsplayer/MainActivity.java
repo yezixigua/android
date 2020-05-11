@@ -21,6 +21,7 @@ import com.zz.myadsplayer.contentprovider.TestMyProvider;
 import com.zz.myadsplayer.mytest.FragmentTest;
 import com.zz.myadsplayer.mytest.MyTest;
 import com.zz.myadsplayer.notificationHelper.NotificationHelper;
+import com.zz.myadsplayer.recyclerview.RecyclerViewActivity;
 import com.zz.myadsplayer.request.RequestServer;
 import com.zz.myadsplayer.service.TimeService;
 
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
     private Button implicitIntent;
     private Button customViewButton;
 
+    private Button recyclerViewButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
 
         implicitIntent = findViewById(R.id.implicit_intent);
         customViewButton = findViewById(R.id.custom_view);
+
+        recyclerViewButton = findViewById(R.id.recycler_view_button);
 
 
         Intent intent = new Intent(this, NofiticationActivity.class);
@@ -217,6 +222,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, CustomViewActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        recyclerViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RecyclerViewActivity.class);
                 startActivity(intent);
             }
         });
