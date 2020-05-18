@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zz.filereader.R;
 import com.zz.filereader.view.ListItem;
 
@@ -61,7 +62,8 @@ public class RecyclerListItemAdapter extends RecyclerView.Adapter<RecyclerListIt
     public void onBindViewHolder(@NonNull RecyclerListItemAdapter.ViewHolder holder, int position) {
         ListItem listItem = mList.get(position);
 
-        holder.itemImage.setImageResource(listItem.getImageId());
+        Glide.with(holder.itemImage).load(listItem.getImageId()).into(holder.itemImage);
+//        holder.itemImage.setImageResource(listItem.getImageId());
         holder.itemNameText.setText(listItem.getName());
         holder.itemTimeText.setText(listItem.getCreateTime());
         holder.itemSizeText.setText(listItem.getSize());

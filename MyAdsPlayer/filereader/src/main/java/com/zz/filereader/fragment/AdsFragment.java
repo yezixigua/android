@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zz.filereader.R;
 import com.zz.filereader.activity.MainActivity;
 import com.zz.filereader.openningadvertisement.AdvertisementPlay;
@@ -94,9 +95,11 @@ public class AdsFragment extends Fragment {
 
         Uri imgUri = advertisementPlay.getRandomImg();
         if (imgUri == null) {
-            imageView.setImageResource(R.drawable.default_ads);
+//            imageView.setImageResource(R.drawable.default_ads);
+            Glide.with(this).load(R.drawable.default_ads).into(imageView);
         } else {
             imageView.setImageURI(imgUri);
+            Glide.with(this).load(imgUri).into(imageView);
         }
 
         mService = new ScheduledThreadPoolExecutor(1);
