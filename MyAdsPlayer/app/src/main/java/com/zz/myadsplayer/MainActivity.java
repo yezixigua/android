@@ -8,11 +8,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.zz.myadsplayer.activity.CustomViewActivity;
 import com.zz.myadsplayer.activity.MediaPlayerTest;
+import com.zz.myadsplayer.activity.MoveView;
 import com.zz.myadsplayer.activity.NetworkState;
 import com.zz.myadsplayer.activity.NofiticationActivity;
 import com.zz.myadsplayer.broadcast.MyService;
@@ -46,6 +48,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
+
     private BlockingQueue<String> queue = new LinkedBlockingQueue<>(10);
 
     private Button videoButton;
@@ -68,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private Button customViewButton;
 
     private Button recyclerViewButton;
+    private Button moveView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerViewButton = findViewById(R.id.recycler_view_button);
 
+        moveView = findViewById(R.id.move_view_button);
 
         Intent intent = new Intent(this, NofiticationActivity.class);
         notificationHelper = new NotificationHelper(this, intent);
@@ -230,6 +236,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, RecyclerViewActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        moveView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MoveView.class);
                 startActivity(intent);
             }
         });

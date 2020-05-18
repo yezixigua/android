@@ -60,6 +60,12 @@
             android:layout_height="wrap_content"
             android:text="事件分发与自定义view" />
 
+        <Button
+            android:id="@+id/move_view_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="移动view" />
+
     </LinearLayout>
 
     <LinearLayout

@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".recyclerview.RecyclerViewActivity"></activity>
+        <activity android:name=".activity.MoveView"></activity>
+        <activity android:name=".recyclerview.RecyclerViewActivity" />
         <activity android:name=".activity.CustomViewActivity" />
         <activity android:name=".activity.ImplicitIntentActivity">
             <intent-filter tools:ignore="AppLinkUrlError">
